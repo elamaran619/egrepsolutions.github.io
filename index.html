@@ -75,12 +75,12 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.2/dist/reveal.js"></script>
-  <script>
-    Reveal.initialize({
+  <script type="module">
+    import Reveal from 'https://cdn.jsdelivr.net/npm/reveal.js@4.6.2/+esm';
+    const deck = new Reveal();
+    deck.initialize({
       hash: true,
-      slideNumber: true,
-      plugins: []
+      slideNumber: true
     });
   </script>
 </body>
