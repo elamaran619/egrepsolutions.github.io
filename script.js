@@ -1,4 +1,4 @@
-// --- Existing Mobile Navigation Toggle (keep this as is) ---
+// --- Existing Mobile Navigation Toggle ---
 const burger = document.querySelector('.burger');
 const nav = document.querySelector('.nav-links');
 const navLinks = document.querySelectorAll('.nav-links li');
@@ -15,7 +15,9 @@ const navSlide = () => {
     burger.classList.toggle('toggle');
 };
 
-burger.addEventListener('click', navSlide);
+if (burger) { // Check if burger exists before adding listener
+    burger.addEventListener('click', navSlide);
+}
 
 navLinks.forEach(link => {
     link.addEventListener('click', () => {
@@ -25,7 +27,7 @@ navLinks.forEach(link => {
     });
 });
 
-// --- Existing Simple Canvas Background Animation (keep this as is) ---
+// --- Existing Simple Canvas Background Animation ---
 const canvas = document.getElementById('networkCanvas');
 if (canvas) {
     const ctx = canvas.getContext('2d');
@@ -102,7 +104,7 @@ if (canvas) {
     window.addEventListener('resize', resizeCanvas);
 }
 
-// --- Existing Text Decryption/Glitch Effect (keep this as is) ---
+// --- Existing Text Decryption/Glitch Effect ---
 document.addEventListener('DOMContentLoaded', () => {
     const glitchElements = document.querySelectorAll('.glitch-text, .glitch-text-small');
 
@@ -170,18 +172,22 @@ const animateCounters = () => {
                 statItems.forEach(item => {
                     const target = parseInt(item.getAttribute('data-target'));
                     let current = 0;
-                    const increment = target / 200; // Adjust speed as needed
+                    const duration = 2000; // 2 seconds
+                    const start = performance.now();
 
-                    const updateCounter = () => {
-                        if (current < target) {
-                            current += increment;
-                            item.textContent = Math.ceil(current);
+                    const updateCounter = (timestamp) => {
+                        const elapsed = timestamp - start;
+                        const progress = Math.min(elapsed / duration, 1);
+                        current = target * progress;
+                        item.textContent = Math.ceil(current).toLocaleString(); // Add comma for thousands
+
+                        if (progress < 1) {
                             requestAnimationFrame(updateCounter);
                         } else {
-                            item.textContent = target.toLocaleString(); // Add comma for thousands
+                            item.textContent = target.toLocaleString();
                         }
                     };
-                    updateCounter();
+                    requestAnimationFrame(updateCounter);
                 });
                 animated = true; // Set flag to true after animation starts
                 observer.unobserve(entry.target); // Stop observing once animated
@@ -195,7 +201,9 @@ const animateCounters = () => {
 };
 
 // Call the function to set up the observer
-animateCounters();
+// Use DOMContentLoaded to ensure elements are present before observing
+document.addEventListener('DOMContentLoaded', animateCounters);
+
 
 // --- New: Detailed Achievements Table Logic ---
 const achievementsData = [
@@ -207,7 +215,15 @@ const achievementsData = [
     { date: '2025-02-28', program: 'CloudSecure Services', type: 'Server-Side Request Forgery (SSRF)', severity: 'Critical', status: 'Resolved', reward: 6000, ref: 'CSS-2025-007' },
     { date: '2025-02-05', program: 'GameNexus Studios', type: 'Authentication Bypass', severity: 'High', status: 'Pending', reward: 0, ref: 'GNS-2025-021' },
     { date: '2025-01-18', program: 'DataGuard Systems', type: 'Improper Authorization', severity: 'Medium', status: 'Resolved', reward: 1500, ref: 'DGS-2025-033' },
-    // Add more dummy data here
+    { date: '2024-12-01', program: 'Voyage Travel', type: 'Sensitive Data Exposure', severity: 'High', status: 'Resolved', reward: 3000, ref: 'VYT-2024-005' },
+    { date: '2024-11-10', program: 'SmartHome IoT', type: 'Broken Authentication', severity: 'Critical', status: 'Resolved', reward: 5500, ref: 'SHI-2024-002' },
+    { date: '2024-10-25', program: 'MediCare Portal', type: 'XML External Entity (XXE)', severity: 'Medium', status: 'Triaged', reward: 1000, ref: 'MCP-2024-077' },
+    // Add more dummy data here for a longer table
+    { date: '2024-09-15', program: 'EduLearn SaaS', type: 'Cross-Site Request Forgery (CSRF)', severity: 'Low', status: 'Resolved', reward: 400, ref: 'ELS-2024-112' },
+    { date: '2024-08-05', program: 'FinTrack Budgeting', type: 'SSRF to RCE', severity: 'Critical', status: 'Resolved', reward: 7000, ref: 'FTB-2024-001' },
+    { date: '2024-07-20', program: 'CodeBase DevTools', type: 'Path Traversal', severity: 'High', status: 'Resolved', reward: 2000, ref: 'CBD-2024-034' },
+    { date: '2024-06-12', program: 'StreamVerse Media', type: 'Unrestricted File Upload', severity: 'Medium', status: 'Pending', reward: 0, ref: 'SVP-2024-060' },
+    { date: '2024-05-30', program: 'GameHub Online', type: 'Denial of Service', severity: 'Low', status: 'Resolved', reward: 250, ref: 'GHO-2024-099' },
 ];
 
 const achievementsTableBody = document.querySelector('#achievementsTable tbody');
@@ -220,6 +236,7 @@ let currentSortColumn = 'date';
 let sortDirection = 'desc'; // Default: newest first
 
 const renderTable = (data) => {
+    if (!achievementsTableBody) return; // Exit if table body not found
     achievementsTableBody.innerHTML = ''; // Clear existing rows
     if (data.length === 0) {
         noResultsDiv.style.display = 'block';
@@ -246,8 +263,8 @@ const renderTable = (data) => {
 
 const filterAndSortTable = () => {
     let filteredData = achievementsData.filter(item => {
-        const searchText = searchInput.value.toLowerCase();
-        const selectedSeverity = filterSeverity.value;
+        const searchText = searchInput ? searchInput.value.toLowerCase() : '';
+        const selectedSeverity = filterSeverity ? filterSeverity.value : '';
 
         const matchesSearch = item.program.toLowerCase().includes(searchText) ||
                               item.type.toLowerCase().includes(searchText) ||
@@ -272,6 +289,8 @@ const filterAndSortTable = () => {
         } else if (currentSortColumn === 'program') {
             valA = a.program.toLowerCase();
             valB = b.program.toLowerCase();
+        } else {
+            return 0; // No sorting for unhandled columns
         }
 
         if (valA < valB) return sortDirection === 'asc' ? -1 : 1;
@@ -282,7 +301,7 @@ const filterAndSortTable = () => {
     renderTable(filteredData);
 };
 
-// Event listeners for filters and sorting
+// Event listeners for filters and sorting - added null checks
 if (searchInput) searchInput.addEventListener('keyup', filterAndSortTable);
 if (filterSeverity) filterSeverity.addEventListener('change', filterAndSortTable);
 if (sortColumn) {
@@ -298,41 +317,36 @@ if (sortColumn) {
     });
 }
 
-// Initial render of the table
-if (achievementsTableBody) {
-    filterAndSortTable(); // Call once on load
-}
-
 // Add sorting functionality to table headers
 const tableHeaders = document.querySelectorAll('#achievementsTable th');
 tableHeaders.forEach(header => {
     header.addEventListener('click', () => {
-        const column = header.textContent.toLowerCase().replace(/\s/g, ''); // Convert "Program/Platform" to "program/platform"
-        if (column.includes('date')) { // Handle 'Date' specifically
-            currentSortColumn = 'date';
-        } else if (column.includes('program')) {
-            currentSortColumn = 'program';
-        } else if (column.includes('severity')) {
-            currentSortColumn = 'severity';
-        } else {
-            // No sorting for other columns for simplicity, or add logic as needed
-            return;
-        }
+        const column = header.dataset.column; // Use data-column attribute directly
+        if (!column) return; // Skip if no data-column attribute
 
-        // Toggle sort direction if clicking the same column again
-        if (header.dataset.sort === sortDirection && header.dataset.column === currentSortColumn) {
+        if (currentSortColumn === column) {
             sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
         } else {
-            sortDirection = currentSortColumn === 'date' ? 'desc' : 'asc'; // Default for date is descending
+            currentSortColumn = column;
+            sortDirection = column === 'date' ? 'desc' : 'asc'; // Default for date is descending
         }
-        
-        // Reset data-sort attributes
-        tableHeaders.forEach(h => delete h.dataset.sort);
-        header.dataset.sort = sortDirection;
-        header.dataset.column = currentSortColumn;
+
+        // Update active sort indicator (optional, but good for UX)
+        tableHeaders.forEach(h => {
+            h.classList.remove('sort-asc', 'sort-desc');
+        });
+        header.classList.add(`sort-${sortDirection}`);
 
         filterAndSortTable();
     });
+});
+
+
+// Initial render of the table on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+    if (achievementsTableBody) {
+        filterAndSortTable();
+    }
 });
 
 
@@ -348,9 +362,11 @@ const showSlide = (index) => {
         dots[i].classList.remove('active');
     });
 
-    testimonials[index].classList.add('active');
-    dots[index].classList.add('active');
-    currentSlide = index;
+    if (testimonials[index] && dots[index]) { // Ensure elements exist
+        testimonials[index].classList.add('active');
+        dots[index].classList.add('active');
+        currentSlide = index;
+    }
 };
 
 const nextSlide = () => {
@@ -359,7 +375,9 @@ const nextSlide = () => {
 };
 
 const startCarousel = () => {
-    testimonialInterval = setInterval(nextSlide, 7000); // Change slide every 7 seconds
+    if (testimonials.length > 1) { // Only start if there's more than one slide
+        testimonialInterval = setInterval(nextSlide, 7000); // Change slide every 7 seconds
+    }
 };
 
 const stopCarousel = () => {
@@ -376,8 +394,10 @@ dots.forEach(dot => {
     });
 });
 
-// Initialize carousel
-if (testimonials.length > 0) {
-    showSlide(0);
-    startCarousel();
-}
+// Initialize carousel on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+    if (testimonials.length > 0) {
+        showSlide(0); // Show first slide immediately
+        startCarousel(); // Start auto-play
+    }
+});
