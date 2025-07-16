@@ -325,7 +325,6 @@ tableHeaders.forEach(header => {
         filterAndSortTable();
     });
 });
-*/
 
 // Initial render of the table on DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -334,6 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+*/
 
 // --- New: Testimonial Carousel Logic ---
 const testimonials = document.querySelectorAll('.testimonial-slide');
