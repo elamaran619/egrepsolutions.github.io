@@ -207,23 +207,7 @@ document.addEventListener('DOMContentLoaded', animateCounters);
 
 // --- New: Detailed Achievements Table Logic ---
 const achievementsData = [
-    { date: '2025-06-15', program: 'GlobalTech Solutions', type: 'Broken Access Control', severity: 'Critical', status: 'Resolved', reward: 5000, ref: 'GTS-2025-001' },
-    { date: '2025-05-20', program: 'FinSafe Banking', type: 'SQL Injection', severity: 'High', status: 'Resolved', reward: 3500, ref: 'FSB-2025-012' },
-    { date: '2025-05-01', program: 'EduConnect Platform', type: 'Cross-Site Scripting (XSS)', severity: 'Medium', status: 'Triaged', reward: 1200, ref: 'ECP-2025-045' },
-    { date: '2025-04-22', program: 'HealthFlow App', type: 'Insecure Direct Object Reference (IDOR)', severity: 'High', status: 'Resolved', reward: 2800, ref: 'HFA-2025-003' },
-    { date: '2025-03-10', program: 'RetailWave E-commerce', type: 'Information Disclosure', severity: 'Low', status: 'Resolved', reward: 500, ref: 'RWE-2025-089' },
-    { date: '2025-02-28', program: 'CloudSecure Services', type: 'Server-Side Request Forgery (SSRF)', severity: 'Critical', status: 'Resolved', reward: 6000, ref: 'CSS-2025-007' },
-    { date: '2025-02-05', program: 'GameNexus Studios', type: 'Authentication Bypass', severity: 'High', status: 'Pending', reward: 0, ref: 'GNS-2025-021' },
-    { date: '2025-01-18', program: 'DataGuard Systems', type: 'Improper Authorization', severity: 'Medium', status: 'Resolved', reward: 1500, ref: 'DGS-2025-033' },
-    { date: '2024-12-01', program: 'Voyage Travel', type: 'Sensitive Data Exposure', severity: 'High', status: 'Resolved', reward: 3000, ref: 'VYT-2024-005' },
-    { date: '2024-11-10', program: 'SmartHome IoT', type: 'Broken Authentication', severity: 'Critical', status: 'Resolved', reward: 5500, ref: 'SHI-2024-002' },
-    { date: '2024-10-25', program: 'MediCare Portal', type: 'XML External Entity (XXE)', severity: 'Medium', status: 'Triaged', reward: 1000, ref: 'MCP-2024-077' },
-    // Add more dummy data here for a longer table
-    { date: '2024-09-15', program: 'EduLearn SaaS', type: 'Cross-Site Request Forgery (CSRF)', severity: 'Low', status: 'Resolved', reward: 400, ref: 'ELS-2024-112' },
-    { date: '2024-08-05', program: 'FinTrack Budgeting', type: 'SSRF to RCE', severity: 'Critical', status: 'Resolved', reward: 7000, ref: 'FTB-2024-001' },
-    { date: '2024-07-20', program: 'CodeBase DevTools', type: 'Path Traversal', severity: 'High', status: 'Resolved', reward: 2000, ref: 'CBD-2024-034' },
-    { date: '2024-06-12', program: 'StreamVerse Media', type: 'Unrestricted File Upload', severity: 'Medium', status: 'Pending', reward: 0, ref: 'SVP-2024-060' },
-    { date: '2024-05-30', program: 'GameHub Online', type: 'Denial of Service', severity: 'Low', status: 'Resolved', reward: 250, ref: 'GHO-2024-099' },
+    { company: '2025-06-15', event: 'GlobalTech Solutions', year: 'Broken Access Control', location: 'Critical', awards: 'Resolved' },
 ];
 
 const achievementsTableBody = document.querySelector('#achievementsTable tbody');
@@ -261,6 +245,7 @@ const renderTable = (data) => {
     });
 };
 
+/*
 const filterAndSortTable = () => {
     let filteredData = achievementsData.filter(item => {
         const searchText = searchInput ? searchInput.value.toLowerCase() : '';
@@ -340,7 +325,7 @@ tableHeaders.forEach(header => {
         filterAndSortTable();
     });
 });
-
+*/
 
 // Initial render of the table on DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
