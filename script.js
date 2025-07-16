@@ -244,77 +244,9 @@ const renderTable = (data) => {
     });
 };
 
-const filterAndSortTable = () => {
-    let filteredData = achievementsData.filter(item => {
-        const searchText = searchInput.value.toLowerCase();
-        const selectedSeverity = filterSeverity.value;
-
-        const matchesSearch = item.program.toLowerCase().includes(searchText) ||
-                              item.type.toLowerCase().includes(searchText) ||
-                              item.ref.toLowerCase().includes(searchText) ||
-                              item.severity.toLowerCase().includes(searchText);
-
-        const matchesSeverity = selectedSeverity === '' || item.severity === selectedSeverity;
-
-        return matchesSearch && matchesSeverity;
-    });
-
-    // Sort data
-    filteredData.sort((a, b) => {
-        let valA, valB;
-        if (currentSortColumn === 'date') {
-            valA = new Date(a.date);
-            valB = new Date(b.date);
-        } else if (currentSortColumn === 'severity') {
-            const severityOrder = { 'Critical': 4, 'High': 3, 'Medium': 2, 'Low': 1 };
-            valA = severityOrder[a.severity] || 0;
-            valB = severityOrder[b.severity] || 0;
-        } else if (currentSortColumn === 'program') {
-            valA = a.program.toLowerCase();
-            valB = b.program.toLowerCase();
-        }
-
-        if (valA < valB) return sortDirection === 'asc' ? -1 : 1;
-        if (valA > valB) return sortDirection === 'asc' ? 1 : -1;
-        return 0;
-    });
-
-    renderTable(filteredData);
-};
 
 
 
-// Add sorting functionality to table headers
-const tableHeaders = document.querySelectorAll('#achievementsTable th');
-tableHeaders.forEach(header => {
-    header.addEventListener('click', () => {
-        const column = header.textContent.toLowerCase().replace(/\s/g, ''); // Convert "Program/Platform" to "program/platform"
-        if (column.includes('date')) { // Handle 'Date' specifically
-            currentSortColumn = 'date';
-        } else if (column.includes('program')) {
-            currentSortColumn = 'program';
-        } else if (column.includes('severity')) {
-            currentSortColumn = 'severity';
-        } else {
-            // No sorting for other columns for simplicity, or add logic as needed
-            return;
-        }
-
-        // Toggle sort direction if clicking the same column again
-        if (header.dataset.sort === sortDirection && header.dataset.column === currentSortColumn) {
-            sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
-        } else {
-            sortDirection = currentSortColumn === 'date' ? 'desc' : 'asc'; // Default for date is descending
-        }
-        
-        // Reset data-sort attributes
-        tableHeaders.forEach(h => delete h.dataset.sort);
-        header.dataset.sort = sortDirection;
-        header.dataset.column = currentSortColumn;
-
-        filterAndSortTable();
-    });
-});
 
 
 // --- New: Testimonial Carousel Logic ---
