@@ -282,26 +282,7 @@ const filterAndSortTable = () => {
     renderTable(filteredData);
 };
 
-// Event listeners for filters and sorting
-if (searchInput) searchInput.addEventListener('keyup', filterAndSortTable);
-if (filterSeverity) filterSeverity.addEventListener('change', filterAndSortTable);
-if (sortColumn) {
-    sortColumn.addEventListener('change', (e) => {
-        currentSortColumn = e.target.value;
-        // Reset sort direction to default (desc for date, asc for others)
-        if (currentSortColumn === 'date') {
-            sortDirection = 'desc';
-        } else {
-            sortDirection = 'asc';
-        }
-        filterAndSortTable();
-    });
-}
 
-// Initial render of the table
-if (achievementsTableBody) {
-    filterAndSortTable(); // Call once on load
-}
 
 // Add sorting functionality to table headers
 const tableHeaders = document.querySelectorAll('#achievementsTable th');
