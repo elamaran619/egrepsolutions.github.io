@@ -204,7 +204,7 @@ const animateCounters = () => {
 // Use DOMContentLoaded to ensure elements are present before observing
 document.addEventListener('DOMContentLoaded', animateCounters);
 
-
+/*
 // --- New: Detailed Achievements Table Logic ---
 const achievementsData = [
     { company: '2025-06-15', event: 'GlobalTech Solutions', year: 'Broken Access Control', location: 'Critical', awards: 'Resolved' },
@@ -245,7 +245,7 @@ const renderTable = (data) => {
     });
 };
 
-/*
+
 const filterAndSortTable = () => {
     let filteredData = achievementsData.filter(item => {
         const searchText = searchInput ? searchInput.value.toLowerCase() : '';
